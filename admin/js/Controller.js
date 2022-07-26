@@ -10,7 +10,7 @@ class ThreeD_Controller_{
     }
 
     do_action(control){
-        let x_val = control.value === 'on' ? true : false
+        let x_val = control.checked; //control.value == 'on' ? true : false
         switch (control.id) {
             case 'three-dm-rotation-x-animate-data':
                 this.model.set_animation({

@@ -8,7 +8,7 @@ class ThreeD_Model_{
     this.config = config;
     this.rotate_y_req = false;
     this.rotate_x_req = false;
-    this.controls;
+    this.controls = null;
     
     this.renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, });
     this.renderer.shadowMap.enabled = true;
@@ -125,10 +125,15 @@ class ThreeD_Model_{
   }
 
   set_orbital_tools(input){
-    if(input.hasOwnProperty('enable') && input.enabled === true){
+    if(this.controls == null){
+      this.controls = new THREE.OrbitControls(this.camera, this.renderer.domElement);
       this.controls.addEventListener('change', () => { this.renderer.render(this.scene, this.camera) });
-    }else{
-      this.controls.removeEventListener('change', () => { this.renderer.render(this.scene, this.camera) });
+      this.controls.target.set(this.config.orbital_tools.target.x, this.config.orbital_tools.target.y, this.config.orbital_tools.target.z);
+      this.controls.update();
+    }
+
+    if(input.hasOwnProperty('enable') ){
+      this.controls.enabled = input.enabled;
     }
 
     if(input.hasOwnProperty('zoom')){
@@ -138,6 +143,7 @@ class ThreeD_Model_{
     if(input.hasOwnProperty('pan')){
       this.controls.enablePan = input.pan;
     }
+    
     this.controls.update();
   }
 }
